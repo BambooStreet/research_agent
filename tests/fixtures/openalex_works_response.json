@@ -1,0 +1,35 @@
+{
+  "meta": {"count": 2, "db_response_time_ms": 12, "page": 1, "per_page": 2},
+  "results": [
+    {
+      "id": "https://openalex.org/W1234567890",
+      "doi": "https://doi.org/10.1000/oa.1",
+      "title": "A Comprehensive Survey of LLM Hallucination",
+      "publication_year": 2024,
+      "authorships": [
+        {"author": {"id": "A1", "display_name": "Carol Park"}},
+        {"author": {"id": "A2", "display_name": "Dan Kim"}}
+      ],
+      "primary_location": {
+        "source": {"id": "S1", "display_name": "arXiv"}
+      },
+      "abstract_inverted_index": {
+        "We": [0],
+        "survey": [1],
+        "hallucination": [2],
+        "in": [3],
+        "LLMs": [4]
+      }
+    },
+    {
+      "id": "https://openalex.org/W9999999999",
+      "doi": null,
+      "display_name": "Minimal Work Record",
+      "publication_year": null,
+      "authorships": [],
+      "primary_location": null,
+      "host_venue": {"display_name": "Legacy Venue"},
+      "abstract_inverted_index": null
+    }
+  ]
+}

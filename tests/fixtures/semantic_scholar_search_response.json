@@ -1,0 +1,33 @@
+{
+  "total": 2,
+  "offset": 0,
+  "next": 2,
+  "data": [
+    {
+      "paperId": "ss-paper-1",
+      "title": "A Survey on Hallucination in Large Language Models",
+      "abstract": "We review recent work on hallucination detection and mitigation in LLMs.",
+      "year": 2023,
+      "authors": [
+        {"authorId": "a1", "name": "Alice Chen"},
+        {"authorId": "a2", "name": "Bob Lee"}
+      ],
+      "externalIds": {
+        "DOI": "10.1000/ss.1",
+        "ArXiv": "2309.00001"
+      },
+      "venue": "ACL",
+      "url": "https://www.semanticscholar.org/paper/ss-paper-1"
+    },
+    {
+      "paperId": "ss-paper-2",
+      "title": "Review of Retrieval Augmented Generation",
+      "abstract": null,
+      "year": null,
+      "authors": null,
+      "externalIds": {},
+      "venue": "",
+      "url": null
+    }
+  ]
+}

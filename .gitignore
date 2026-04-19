@@ -1,0 +1,22 @@
+# 환경 변수
+.env
+
+# 가상환경
+.venv/
+
+# 파이썬 캐시
+__pycache__/
+*.pyc
+
+# 세션 데이터 (개인 연구 기록)
+data/sessions/*.json
+!data/sessions/.gitkeep
+
+# 테스트/린터 캐시
+.pytest_cache/
+.ruff_cache/
+
+# 빌드 아티팩트
+dist/
+build/
+*.egg-info/
