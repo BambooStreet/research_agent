@@ -12,15 +12,29 @@
 
 ## 설치
 
+의존성 관리는 [uv](https://docs.astral.sh/uv/) 로 한다. Python 3.11 이상이 필요하다.
+
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
+# uv 가 없으면 먼저 설치
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 프로젝트 의존성 설치 (.venv 자동 생성, uv.lock 기반 재현 가능한 설치)
+uv sync --extra dev
+
 cp .env.example .env
 # .env 파일에 ANTHROPIC_API_KEY 입력
 ```
 
-Python 3.11 이상이 필요하다.
+의존성 변경 시:
+
+```bash
+uv add <package>          # 런타임 의존성 추가
+uv add --dev <package>    # 개발 의존성 추가
+uv lock                   # pyproject.toml 변경 후 lockfile 재생성
+uv sync                   # lockfile 기준으로 .venv 재동기화
+```
+
+`uv.lock` 은 커밋한다 (재현 가능한 빌드를 위해).
 
 `.env` 에서 선택적으로 설정할 수 있는 키:
 
@@ -32,8 +46,8 @@ Python 3.11 이상이 필요하다.
 ## 실행
 
 ```bash
-research-agent start         # 새 세션 시작
-research-agent list          # 저장된 세션 목록 출력
+uv run research-agent start  # 새 세션 시작
+uv run research-agent list   # 저장된 세션 목록 출력
 ```
 
 세션 JSON 은 `data/sessions/<YYYY-MM-DD>_<session_id>.json` 경로에 저장된다. 파일명에 날짜 접두사가 붙어 있어 디렉토리만 훑어도 최신 세션을 찾기 쉽다.
@@ -41,10 +55,10 @@ research-agent list          # 저장된 세션 목록 출력
 ## 개발
 
 ```bash
-pytest -q
-pytest --cov=src/research_agent
-ruff check .
-ruff format .
+uv run pytest -q
+uv run pytest --cov=src/research_agent
+uv run ruff check .
+uv run ruff format .
 ```
 
 테스트는 외부 네트워크 호출 없이 모두 모킹되어 오프라인에서 돈다 (`respx` 로 httpx 주입, LLM/검색 클라이언트는 fake 구현 주입).
