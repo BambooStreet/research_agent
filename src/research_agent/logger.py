@@ -35,7 +35,7 @@ _LOG_FORMAT = (
 def _resolve_log_level() -> str:
     """설정에서 로그 레벨을 읽는다. 실패 시 INFO.
 
-    import 타이밍에 `.env` 가 없거나 `ANTHROPIC_API_KEY` 미설정이어도 로거 초기화가
+    import 타이밍에 `.env` 가 없거나 `OPENAI_API_KEY` 미설정이어도 로거 초기화가
     앱 전체를 죽이면 안 되므로 광범위한 예외 포획이 정당화된다.
     """
 

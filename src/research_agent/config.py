@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     """런타임 설정.
 
     필드 이름은 snake_case 이며, 대응 환경 변수는 대문자(pydantic-settings 기본 규칙).
-    예: `anthropic_api_key` <-> `ANTHROPIC_API_KEY`.
+    예: `openai_api_key` <-> `OPENAI_API_KEY`.
     """
 
     model_config = SettingsConfigDict(
@@ -26,8 +26,8 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    anthropic_api_key: SecretStr
-    anthropic_model: str = "claude-sonnet-4-6"
+    openai_api_key: SecretStr
+    openai_model: str = "gpt-4o-mini"
 
     semantic_scholar_api_key: SecretStr | None = None
     openalex_mailto: str | None = None

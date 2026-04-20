@@ -14,7 +14,7 @@ from typing import Iterator
 import pytest
 
 # `get_settings` 가 import 되기 전 단계에서 환경변수를 세팅해 둔다.
-os.environ.setdefault("ANTHROPIC_API_KEY", "test-key")
+os.environ.setdefault("OPENAI_API_KEY", "test-key")
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 

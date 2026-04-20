@@ -11,8 +11,8 @@ from pathlib import Path
 from typing import cast
 from uuid import uuid4
 
-import anthropic
 import httpx
+import openai
 from pydantic import ValidationError
 from rich.console import Console
 
@@ -52,7 +52,7 @@ def run_interactive_session() -> Path | None:
     except ValidationError as exc:
         console.print(
             "[bold red]환경 변수 설정 오류.[/bold red] "
-            "`.env` 파일에 ANTHROPIC_API_KEY 가 설정돼 있는지 확인하세요."
+            "`.env` 파일에 OPENAI_API_KEY 가 설정돼 있는지 확인하세요."
         )
         logger.error("LLMClient 초기화 실패: {err}", err=str(exc))
         return None
@@ -67,12 +67,12 @@ def run_interactive_session() -> Path | None:
         console.print("\n[yellow]사용자에 의해 중단되었습니다. (Ctrl+C)[/yellow]")
         logger.info("세션 중단 (KeyboardInterrupt): thread_id={tid}", tid=thread_id)
         return None
-    except anthropic.APIError as exc:
+    except openai.APIError as exc:
         # 인증/레이트리밋/서버 에러 모두 여기로 모인다. 사용자에게는 요지만 노출.
         console.print(
-            f"[bold red]Anthropic API 호출 실패:[/bold red] {exc.__class__.__name__} — {exc}"
+            f"[bold red]OpenAI API 호출 실패:[/bold red] {exc.__class__.__name__} — {exc}"
         )
-        logger.error("Anthropic API 오류: {err}", err=repr(exc))
+        logger.error("OpenAI API 오류: {err}", err=repr(exc))
         return None
     except httpx.HTTPError as exc:
         # 외부 검색 API 네트워크 오류 (Semantic Scholar / OpenAlex 등).

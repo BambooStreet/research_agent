@@ -22,7 +22,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync --extra dev
 
 cp .env.example .env
-# .env 파일에 ANTHROPIC_API_KEY 입력
+# .env 파일에 OPENAI_API_KEY 입력
 ```
 
 의존성 변경 시:
@@ -40,7 +40,7 @@ uv sync                   # lockfile 기준으로 .venv 재동기화
 
 - `SEMANTIC_SCHOLAR_API_KEY` — 있으면 Semantic Scholar 요청에 쓰여 레이트 리밋이 완화된다.
 - `OPENALEX_MAILTO` — OpenAlex polite pool 용 이메일.
-- `ANTHROPIC_MODEL` — 기본값은 최신 Sonnet. 모델 변경 시 덮어쓴다.
+- `OPENAI_MODEL` — 기본값 `gpt-4o-mini`. 더 나은 품질이 필요하면 `gpt-4o` 등으로 덮어쓴다.
 - `LOG_LEVEL` — 기본 `INFO`.
 
 ## 실행

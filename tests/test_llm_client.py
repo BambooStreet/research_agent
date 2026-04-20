@@ -1,6 +1,6 @@
 """llm/client.py 의 순수 함수 유닛 테스트.
 
-실제 Anthropic 호출은 하지 않는다. `_strip_json_fence` 와 같은 파서 헬퍼만 검증.
+실제 OpenAI 호출은 하지 않는다. `_strip_json_fence` 와 같은 파서 헬퍼만 검증.
 """
 
 from __future__ import annotations
@@ -60,24 +60,24 @@ class TestStripJsonFence:
 class TestLLMClientJsonParsing:
     """`complete_json` 이 파서 오류를 명확한 ValueError 로 바꿔주는지.
 
-    실제 HTTP 호출을 피하기 위해 `complete_text` 만 monkeypatch 한다.
+    실제 HTTP 호출을 피하기 위해 `_create` 를 monkeypatch 한다.
     """
 
     def test_complete_json_parses_valid(self, monkeypatch: pytest.MonkeyPatch) -> None:
         from research_agent.llm.client import LLMClient
 
-        # __init__ 에서 anthropic.Anthropic 이 실제 API 키 검증을 하지 않도록 패치.
+        # __init__ 에서 openai.OpenAI 가 실제 API 키 검증을 하지 않도록 패치.
         import research_agent.llm.client as mod
 
-        class FakeAnth:
+        class FakeOAI:
             def __init__(self, *args, **kwargs) -> None:
                 pass
 
-        monkeypatch.setattr(mod.anthropic, "Anthropic", FakeAnth)
+        monkeypatch.setattr(mod.openai, "OpenAI", FakeOAI)
 
         client = LLMClient(model="test-model")
         monkeypatch.setattr(
-            client, "complete_text", lambda **_: '```json\n{"scope": "ok"}\n```'
+            client, "_create", lambda **_: '```json\n{"scope": "ok"}\n```'
         )
         assert client.complete_json(system="s", user="u") == {"scope": "ok"}
 
@@ -87,14 +87,14 @@ class TestLLMClientJsonParsing:
         from research_agent.llm.client import LLMClient
         import research_agent.llm.client as mod
 
-        class FakeAnth:
+        class FakeOAI:
             def __init__(self, *args, **kwargs) -> None:
                 pass
 
-        monkeypatch.setattr(mod.anthropic, "Anthropic", FakeAnth)
+        monkeypatch.setattr(mod.openai, "OpenAI", FakeOAI)
 
         client = LLMClient()
-        monkeypatch.setattr(client, "complete_text", lambda **_: "")
+        monkeypatch.setattr(client, "_create", lambda **_: "")
         with pytest.raises(ValueError, match="empty response"):
             client.complete_json(system="s", user="u")
 
@@ -104,14 +104,14 @@ class TestLLMClientJsonParsing:
         from research_agent.llm.client import LLMClient
         import research_agent.llm.client as mod
 
-        class FakeAnth:
+        class FakeOAI:
             def __init__(self, *args, **kwargs) -> None:
                 pass
 
-        monkeypatch.setattr(mod.anthropic, "Anthropic", FakeAnth)
+        monkeypatch.setattr(mod.openai, "OpenAI", FakeOAI)
 
         client = LLMClient()
-        monkeypatch.setattr(client, "complete_text", lambda **_: "not json at all")
+        monkeypatch.setattr(client, "_create", lambda **_: "not json at all")
         with pytest.raises(ValueError, match="did not return valid JSON"):
             client.complete_json(system="s", user="u")
 
@@ -121,13 +121,13 @@ class TestLLMClientJsonParsing:
         from research_agent.llm.client import LLMClient
         import research_agent.llm.client as mod
 
-        class FakeAnth:
+        class FakeOAI:
             def __init__(self, *args, **kwargs) -> None:
                 pass
 
-        monkeypatch.setattr(mod.anthropic, "Anthropic", FakeAnth)
+        monkeypatch.setattr(mod.openai, "OpenAI", FakeOAI)
 
         client = LLMClient()
-        monkeypatch.setattr(client, "complete_text", lambda **_: "[1, 2, 3]")
+        monkeypatch.setattr(client, "_create", lambda **_: "[1, 2, 3]")
         with pytest.raises(ValueError, match="must be an object"):
             client.complete_json(system="s", user="u")

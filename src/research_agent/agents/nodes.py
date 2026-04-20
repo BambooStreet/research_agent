@@ -140,7 +140,7 @@ def make_nodes(
     """외부 의존을 주입받아 노드 함수 묶음을 반환한다.
 
     기본값 해석:
-    - `llm` 미지정 시 `LLMClient()` 로 실 Anthropic 호출 (ANTHROPIC_API_KEY 필요)
+    - `llm` 미지정 시 `LLMClient()` 로 실 OpenAI 호출 (OPENAI_API_KEY 필요)
     - `search_clients` 미지정 시 arxiv/openalex/semantic_scholar 모듈 사용
     - `cli` 는 필수 (Phase D 의 CLI 구현 주입 기대) — None 이면 사용 시점에 AttributeError
     - `storage_save` 미지정 시 `save_session` 사용
