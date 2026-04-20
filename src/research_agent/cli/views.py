@@ -43,6 +43,17 @@ def _format_source(source: PaperSource | str) -> str:
     return str(source)
 
 
+def _strip_surrogates(text: str) -> str:
+    """stdin 에 섞인 unpaired UTF-16 surrogate 를 제거한다.
+
+    WSL/Windows 터미널에서 한글 IME 중간 조합 상태가 surrogateescape 로 들어오는
+    경우가 있어, 그대로 두면 이후 UTF-8 인코딩(LLM 요청, 검색 쿼리, JSON 직렬화)에서
+    `UnicodeEncodeError` 를 일으킨다. 입력 경계에서 한 번 정리한다.
+    """
+
+    return "".join(c for c in text if not (0xD800 <= ord(c) <= 0xDFFF))
+
+
 class RichCLI:
     """rich.Prompt + rich.Panel 로 구성된 CLIInterface 구현.
 
@@ -59,7 +70,7 @@ class RichCLI:
 
         while True:
             topic = Prompt.ask("[bold cyan]> 연구 주제를 입력하세요[/bold cyan]")
-            stripped = topic.strip()
+            stripped = _strip_surrogates(topic).strip()
             if stripped:
                 return stripped
             self.console.print("[red]빈 입력입니다. 주제를 한 줄 이상 입력해주세요.[/red]")
@@ -80,7 +91,7 @@ class RichCLI:
 
         while True:
             topic = Prompt.ask("직접 입력할 주제")
-            stripped = topic.strip()
+            stripped = _strip_surrogates(topic).strip()
             if stripped:
                 return stripped
             self.console.print("[red]빈 입력입니다. 주제를 다시 입력해주세요.[/red]")
